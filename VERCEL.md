@@ -1,137 +1,93 @@
 # Deploying StallPulse to Vercel
 
-This guide walks through deploying the **Next.js web app** (`web/`) to Vercel. The Python data pipeline runs locally or on a separate scheduler (not on Vercel).
+The Next.js app lives in the **`web/`** folder. Vercel must use `web` as the Root Directory.
 
-## Fix: 404 NOT_FOUND after deploy
+## Fresh deploy (start over)
 
-If you see Vercel's plain **404: NOT_FOUND** page (not the Next.js app), the project was deployed from the **repo root** instead of the `web/` folder.
+If you got **404 NOT_FOUND** or a blank **Application Preset**, follow these steps exactly:
 
-**Fix (recommended):**
+### 1. Delete the old Vercel project
 
-1. Open [Vercel Dashboard](https://vercel.com/dashboard) → your project → **Settings** → **General**
-2. Find **Root Directory** → click **Edit** → enter `web` → **Save**
-3. Go to **Deployments** → click **⋯** on the latest deployment → **Redeploy**
+1. [Vercel Dashboard](https://vercel.com/dashboard) → open the broken project
+2. **Settings** → **General** → scroll to **Delete Project**
 
-After redeploy, `https://your-project.vercel.app/` should show the StallPulse dashboard.
+### 2. Pull the latest code
 
-> The repo also includes a root `vercel.json` that points builds at `web/package.json`. If 404 persists after setting Root Directory, delete the root `vercel.json` and redeploy with Root Directory = `web` only.
+The repo must **not** have a `vercel.json` at the repository root (that file breaks framework detection). It should only have `web/vercel.json`.
 
-## Prerequisites
+```bash
+git pull origin main
+```
 
-- A [Vercel account](https://vercel.com/signup) (free tier works)
-- [Vercel CLI](https://vercel.com/docs/cli) (optional): `npm i -g vercel`
-- Git repository pushed to GitHub/GitLab/Bitbucket (recommended)
+### 3. Import again
 
-## Option A: Deploy via Vercel Dashboard (recommended)
+1. Go to [vercel.com/new](https://vercel.com/new)
+2. Import **`yerenmao/Bitcoin-FinalProject`**
+3. **Before clicking Deploy**, set Root Directory:
+   - Click **Edit** next to Root Directory
+   - Type `web` and confirm
+   - Wait 2–3 seconds — **Framework Preset** should change to **Next.js**
+4. Leave Build Command / Output Directory as defaults
+5. Click **Deploy**
 
-1. **Push your code** to a Git remote (GitHub, etc.).
+### Why Application Preset was blank
 
-2. **Import project** at [vercel.com/new](https://vercel.com/new).
+Vercel couldn't detect Next.js because:
 
-3. **Configure root directory:**
-   - Set **Root Directory** to `web`
-   - Framework Preset: **Next.js** (auto-detected)
+1. **Root Directory was wrong initially** — the repo root has Python scripts, not a Next.js app
+2. **A legacy root `vercel.json` existed** — the old `"version": 2, "builds": [...]` config overrides auto-detection and locks Framework Preset to blank / Other
 
-4. **Build settings** (defaults are fine):
-   | Setting | Value |
-   |---------|-------|
-   | Build Command | `npm run build` |
-   | Output Directory | `.next` |
-   | Install Command | `npm install` |
-   | Node.js Version | 20.x |
+With Root Directory = `web` and no root `vercel.json`, Vercel reads `web/package.json` (which includes `next`) and selects **Next.js** automatically.
 
-5. **Environment variables:** None required for the MVP. The app reads pre-processed JSON from `web/public/data/location_scores.json`.
+> **If Framework Preset stays blank:** deploy anyway — as long as Root Directory is `web`, the build still works. You can also set it manually later under **Settings → General → Framework Preset → Next.js**.
 
-6. Click **Deploy**. Vercel builds and hosts the app at `https://<project>.vercel.app`.
+## Settings reference
 
-## Option B: Deploy via CLI
+| Setting | Value |
+|---------|-------|
+| Root Directory | `web` |
+| Framework Preset | Next.js |
+| Build Command | `npm run build` (default) |
+| Output Directory | *(leave empty — Vercel sets this for Next.js)* |
+| Install Command | `npm install` (default) |
+| Node.js Version | 20.x |
 
-From the repository root:
+No environment variables are required. The app reads `public/data/location_scores.json`.
+
+## Deploy via CLI (alternative)
 
 ```bash
 cd web
 npm install
-npx vercel
-```
-
-Follow prompts:
-- **Set up and deploy?** Yes
-- **Which scope?** Your account
-- **Link to existing project?** No (first deploy)
-- **Project name?** `stallpulse` (or your choice)
-- **Directory?** `./` (you are already in `web/`)
-
-For production:
-
-```bash
 npx vercel --prod
 ```
 
-## Updating data on Vercel
+Run commands from inside `web/`, not the repo root.
 
-Vercel serves static files from `web/public/`. To refresh location scores after re-running the pipeline:
+## Updating location data
+
+After re-running the pipeline locally:
 
 ```bash
-# 1. Run pipeline locally
-source ../.venv/bin/activate
-python ../scripts/process/score_locations.py
-
-# 2. Commit updated JSON (optional)
-git add public/data/location_scores.json
+python scripts/process/score_locations.py   # from repo root
+git add web/public/data/location_scores.json
 git commit -m "Update location scores"
-
-# 3. Push → Vercel auto-redeploys
 git push
 ```
 
-Or copy manually before deploy:
+Vercel redeploys automatically on push.
 
-```bash
-cp ../data/processed/location_scores.json public/data/location_scores.json
-```
+## Verify
 
-## Custom domain (optional)
-
-1. Vercel Dashboard → Project → **Settings** → **Domains**
-2. Add your domain and follow DNS instructions
+- Dashboard: `https://<project>.vercel.app/`
+- About: `https://<project>.vercel.app/about`
+- API: `https://<project>.vercel.app/api/locations`
 
 ## Troubleshooting
 
 | Issue | Fix |
 |-------|-----|
-| `Module not found: @/...` | Ensure `tsconfig.json` has `"paths": { "@/*": ["./src/*"] }` |
-| Build fails on Node version | Set Node 20.x in Project Settings → General |
-| Empty dashboard | Confirm `web/public/data/location_scores.json` exists |
-| API 404 | Routes are at `/api/locations`; redeploy after adding new routes |
-
-## Production enhancements (optional)
-
-For a production deployment beyond the course MVP:
-
-- **Neon PostgreSQL:** Store scores in a database instead of static JSON; add `DATABASE_URL` env var
-- **Cron job:** Use Vercel Cron or GitHub Actions to run `scripts/run_pipeline.py` weekly
-- **Auth:** Add Vercel Auth or Clerk for paid API tiers
-
-## Verify deployment
-
-After deploy, check:
-
-- Dashboard: `https://<project>.vercel.app/`
-- About page: `https://<project>.vercel.app/about`
-- API: `https://<project>.vercel.app/api/locations`
-
-Example API response:
-
-```json
-{
-  "count": 25,
-  "data": [
-    {
-      "centre_name": "Tekka Centre",
-      "viability_score": 83.4,
-      "tier": "Excellent",
-      ...
-    }
-  ]
-}
-```
+| 404 NOT_FOUND (plain Vercel page) | Root Directory must be `web`, not `.` |
+| Blank Application Preset | Remove root `vercel.json`; set Root Directory to `web` first |
+| Build fails | Set Node.js to 20.x in Project Settings |
+| Empty dashboard | Ensure `web/public/data/location_scores.json` exists in the repo |
