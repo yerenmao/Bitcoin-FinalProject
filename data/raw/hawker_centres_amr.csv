@@ -1,0 +1,26 @@
+centre_name,planning_area,postal_prefix,median_amr_sgd,stall_count_estimate,nearest_mrt,mrt_distance_km
+Maxwell Food Centre,Tanjong Pagar,069,1250,120,Chinatown,0.3
+Chinatown Complex,Tanjong Pagar,050,1100,260,Chinatown,0.1
+Old Airport Road Food Centre,Geylang,390,950,168,Mountbatten,0.8
+Tiong Bahru Market,Tiong Bahru,168,900,500,Tiong Bahru,0.2
+Amoy Street Food Centre,Tanjong Pagar,069,1300,32,Telok Ayer,0.2
+Lau Pa Sat,Tanjong Pagar,018,1750,54,Raffles Place,0.1
+Tekka Centre,Rochor,210,850,284,Little India,0.1
+Golden Mile Food Centre,Kallang,199,750,42,Nicoll Highway,0.4
+Bedok Interchange Hawker Centre,Bedok,460,560,62,Bedok,0.1
+Tampines Round Market,Tampines,520,550,72,Tampines,0.3
+Jurong West 505 Market,Jurong West,640,500,48,Boon Lay,0.5
+Yishun Park Hawker Centre,Yishun,760,480,38,Yishun,0.4
+Chomp Chomp Food Centre,Serangoon,554,700,32,Serangoon,0.6
+Newton Food Centre,Newton,228,1400,86,Newton,0.2
+Changi Village Food Centre,Changi,499,650,32,Changi Village,0.3
+Hong Lim Market & Food Centre,Outram,059,1200,100,Chinatown,0.3
+Whampoa Makan Place,Kallang,320,680,45,Bendemeer,0.3
+Ghim Moh Market,Buona Vista,270,720,40,Buona Vista,0.4
+Clementi 448 Market & Food Centre,Clementi,120,580,36,Clementi,0.2
+Ang Mo Kio 628 Market,Ang Mo Kio,560,520,42,Ang Mo Kio,0.3
+Marine Parade Central Market,Marine Parade,440,800,48,Marine Parade,0.5
+Pek Kio Market & Food Centre,Kallang,327,750,40,Farrer Park,0.4
+Commonwealth Crescent Market,Queenstown,140,650,38,Commonwealth,0.3
+Bukit Merah Central Food Centre,Bukit Merah,161,1110,45,Redhill,0.2
+Aljunied Avenue 2 Market & Food Centre,Geylang,380,1300,35,Aljunied,0.3

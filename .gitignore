@@ -1,0 +1,40 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+
+# Data (large raw files - regenerate via pipeline)
+data/raw/nea_establishments.json
+data/raw/nea_establishments.csv
+data/raw/fetch.log
+data/raw/mrt_stations.json
+
+# LaTeX build artifacts
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
+
+# Node / Next.js
+web/node_modules/
+web/.next/
+web/out/
+web/.vercel
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.Rhistory
+
+# Env / secrets
+.env
+.env.local
+.env*.local
