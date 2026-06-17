@@ -112,11 +112,9 @@ Output: `report/report.pdf`
 
 ## Deployed version
 
-Deploy to Vercel following [VERCEL.md](./VERCEL.md). After deployment, set your live URL here:
+Live app: **[https://bitcoin-final-project.vercel.app/](https://bitcoin-final-project.vercel.app/)**
 
-```
-https://your-project.vercel.app
-```
+Deploy instructions: [VERCEL.md](./VERCEL.md)
 
 ## Demand research reproduction
 

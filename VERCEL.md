@@ -79,9 +79,9 @@ Vercel redeploys automatically on push.
 
 ## Verify
 
-- Dashboard: `https://<project>.vercel.app/`
-- About: `https://<project>.vercel.app/about`
-- API: `https://<project>.vercel.app/api/locations`
+- Dashboard: [https://bitcoin-final-project.vercel.app/](https://bitcoin-final-project.vercel.app/)
+- About: [https://bitcoin-final-project.vercel.app/about](https://bitcoin-final-project.vercel.app/about)
+- API: [https://bitcoin-final-project.vercel.app/api/locations](https://bitcoin-final-project.vercel.app/api/locations)
 
 ## Troubleshooting
 
