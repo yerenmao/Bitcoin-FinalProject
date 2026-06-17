@@ -2,6 +2,20 @@
 
 This guide walks through deploying the **Next.js web app** (`web/`) to Vercel. The Python data pipeline runs locally or on a separate scheduler (not on Vercel).
 
+## Fix: 404 NOT_FOUND after deploy
+
+If you see Vercel's plain **404: NOT_FOUND** page (not the Next.js app), the project was deployed from the **repo root** instead of the `web/` folder.
+
+**Fix (recommended):**
+
+1. Open [Vercel Dashboard](https://vercel.com/dashboard) → your project → **Settings** → **General**
+2. Find **Root Directory** → click **Edit** → enter `web` → **Save**
+3. Go to **Deployments** → click **⋯** on the latest deployment → **Redeploy**
+
+After redeploy, `https://your-project.vercel.app/` should show the StallPulse dashboard.
+
+> The repo also includes a root `vercel.json` that points builds at `web/package.json`. If 404 persists after setting Root Directory, delete the root `vercel.json` and redeploy with Root Directory = `web` only.
+
 ## Prerequisites
 
 - A [Vercel account](https://vercel.com/signup) (free tier works)
